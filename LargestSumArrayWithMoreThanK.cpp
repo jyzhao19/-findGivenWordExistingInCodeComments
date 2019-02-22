@@ -1,33 +1,33 @@
 #include <iostream>
 #include <vector>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 int solution(vector<int> arr, int num) {
-    int arrLength = arr.size();
-    vector<int> dp(arrLength, INT_MIN);
-    vector<int> dp_s(arrLength, 0);
-    dp[num - 1] = 0;
-    for (int i = 0; i<num; i++)
-        dp[num - 1] += arr[i];
 
-    int res = dp[num - 1];
-    for (int i = num; i<arrLength; i++) {
-        if (dp[i - 1] >= 0 || arr[dp_s[i - 1]]>0) {
+    int arrLength = arr.size();
+    vector<int> dp(arrLength, INT_MIN); // max subarray ending at every indices
+
+    dp[0] = arr[0];
+    for (int i = 1; i < arrLength; i++) {
+        if (dp[i - 1] > 0) {
             dp[i] = dp[i - 1] + arr[i];
-            dp_s[i] = dp_s[i - 1];
         }
-        else {
-            dp[i] = dp[i - 1] + arr[i] - arr[dp_s[i - 1]];
-            dp_s[i] = dp_s[i] + 1;
-        }
-        res = res > dp[i] ? res : dp[i];
+        else 
+            dp[i] = arr[i];
     }
 
-    cout << "JZ: ";
-    for (auto i : dp_s)
-        cout << i << " ";
+    int slidWindow = 0;
+    for (int i=0;i<num; i++)
+        slidWindow += arr[i];
 
+    int res = slidWindow;
+    for (int i = num; i<arrLength; i++) {
+        slidWindow = slidWindow + arr[i] - arr[i-num];
+        res = max(res, max(slidWindow, slidWindow+dp[i-num]));
+    }
+    
     return res;
 }
 
@@ -44,7 +44,6 @@ int main() {
         int k;
         cin >> k;
         cout << solution(arr, k) << endl;
-
     }
     return 0;
 }
