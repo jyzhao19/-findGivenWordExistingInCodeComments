@@ -1,0 +1,18 @@
+using namespace std;
+
+class MedianFinder {
+public:
+  addNum(int a) {
+    int l_size = l_.size();
+    int r_size = r_.size();
+    
+  }
+  
+  int findMedian() {
+    
+  }
+  
+private:
+  priority_queue<int, less<int>> l_;
+  priority_queue<int, greater<int>> r_;
+}
