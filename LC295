@@ -1,18 +1,42 @@
+#include <functional>
 using namespace std;
 
 class MedianFinder {
 public:
-  addNum(int a) {
-    int l_size = l_.size();
-    int r_size = r_.size();
+    /** initialize your data structure here. */
+    MedianFinder() {    }
     
-  }
-  
-  int findMedian() {
+    void addNum(int a) {
+        // always make sure l_.size() >= r_.size()
+        if (l_.empty() || l_.top()>=a)
+          l_.push(a);
+        else
+          r_.push(a);
+
+        if (l_.size()-r_.size()==2) {
+          r_.push(l_.top());
+          l_.pop();
+        }
+        else if (r_.size()-l_.size()==1) {
+          l_.push(r_.top());
+          r_.pop();
+        }
+    }
     
-  }
-  
+    double findMedian() {
+        if ( l_.size()-r_.size()==1 )
+            return static_cast<double>(l_.top());
+        else
+            return static_cast<double>(l_.top()+r_.top())/2.0;
+    }
 private:
-  priority_queue<int, less<int>> l_;
-  priority_queue<int, greater<int>> r_;
-}
+    priority_queue<int, vector<int>, less<int>> l_;
+    priority_queue<int, vector<int>, greater<int>> r_;
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
